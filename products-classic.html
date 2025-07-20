@@ -13,73 +13,83 @@
             padding-top: 80px;
         }
         .navbar {
-        background-color: #333;
-        padding: 0.5rem;
-        text-align: center;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-    .nav-link {
-        color: white;
-        text-decoration: none;
-        margin: 0 0.8rem;
-        font-size: 1rem;
-        transition: color 0.3s ease;
-        display: inline-block;
-    }
-    @media (max-width: 600px) {
+            background-color: #2c3e50; /* 深蓝色 */
+            padding: 0.8rem 0; /* 增加垂直内边距 */
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            overflow-x: auto;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* 添加阴影 */
+        }
         .nav-link {
-            margin: 0 0.5rem;
-            font-size: 0.9rem;
+            color: #ecf0f1; /* 浅灰色 */
+            text-decoration: none;
+            margin: 0 1.2rem; /* 增加左右间距 */
+            font-size: 1.1rem; /* 增大字体 */
+            transition: color 0.3s ease, transform 0.3s ease; /* 添加transform过渡 */
+            display: inline-block;
+            padding: 0.5rem 0; /* 增加点击区域 */
         }
-        .navbar {
-            padding: 0.3rem;
+        @media (max-width: 600px) {
+            .nav-link {
+                margin: 0 0.8rem;
+                font-size: 1rem;
+            }
+            .navbar {
+                padding: 0.5rem 0;
+            }
         }
-    }
         .nav-link:hover {
-            color: #4CAF50;
+            color: #3498db; /* 亮蓝色 */
+            transform: translateY(-2px); /* 悬停效果 */
         }
         h1 {
             text-align: center;
-            color: #333;
+            color: #2c3e50; /* 深蓝色 */
+            margin-bottom: 30px; /* 增加底部间距 */
+            font-size: 2.5em; /* 增大标题字体 */
+            letter-spacing: 1px; /* 增加字母间距 */
         }
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 调整最小宽度 */
+            gap: 25px; /* 调整间距 */
             padding: 20px;
+            max-width: 1200px; /* 限制最大宽度 */
+            margin: 0 auto; /* 居中显示 */
         }
         .image-container {
             background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 15px; /* 增加内边距 */
+            border-radius: 10px; /* 更圆的边角 */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15); /* 更明显的阴影 */
             transition: all 0.3s ease;
             overflow: hidden;
+            display: flex; /* 使用flex布局 */
+            flex-direction: column; /* 垂直排列 */
+            align-items: center; /* 水平居中 */
+            height: 380px; /* 固定高度 */
         }
         .image-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transform: translateY(-8px); /* 更明显的上浮效果 */
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2); /* 更明显的悬停阴影 */
         }
         .image-container img {
             width: 100%;
-            height: auto;
+            height: 280px; /* 固定图片高度 */
+            object-fit: cover; /* 裁剪图片以填充容器 */
             display: block;
-            border-radius: 5px;
+            border-radius: 8px; /* 更圆的图片边角 */
             transition: transform 0.3s ease;
         }
         .image-container:hover img {
-            transform: scale(1.03);
+            transform: scale(1.05); /* 更明显的放大效果 */
         }
         .image-name {
-            margin-top: 8px;
-            font-size: 14px;
-            color: #666;
-            word-break: break-all;
+            display: none; /* 隐藏图片名称 */
         }
     </style>
 </head>
@@ -117,7 +127,7 @@ const images = [
             nameDiv.className = 'image-name';
             nameDiv.textContent = imageName;
             container.appendChild(img);
-            container.appendChild(nameDiv);
+            // container.appendChild(nameDiv); // 移除图片名称显示
             gallery.appendChild(container);
             img.addEventListener('click', () => {
                 const modal = document.createElement('div');
