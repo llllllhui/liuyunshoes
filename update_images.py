@@ -28,7 +28,7 @@ IMAGE_EXT = '.jpg'
 def get_image_list(folder):
     """获取指定文件夹下所有指定扩展名的文件"""
     if not os.path.exists(folder):
-        print(f'警告：文件夹 {folder} 不存在，跳过更新')
+        print(f'Warning: Folder {folder} does not exist, skipping update.')
         return []
     return [f for f in os.listdir(folder) if f.endswith(IMAGE_EXT)]
 
@@ -46,7 +46,7 @@ def update_html(config):
         with open(html_file, 'r', encoding='utf-8') as f:
             content = f.read()
     except FileNotFoundError:
-        print(f'错误：文件 {html_file} 不存在，跳过更新')
+        print(f'Error: File {html_file} not found, skipping update.')
         return
 
     # 生成新的images数组内容
@@ -60,16 +60,16 @@ def update_html(config):
     end_idx = content.find(end_tag, start_idx) + len(end_tag)
 
     if start_idx == -1 or end_idx == -1:
-        print(f'警告：在 {html_file} 中未找到需要更新的images数组代码块，请检查注释行是否正确')
+        print(f'Warning: Image array code block not found in {html_file}, please check if the comment line is correct.')
         return
 
     # 写入更新后的内容
     updated_content = content[:start_idx] + new_code + content[end_idx:]
     with open(html_file, 'w', encoding='utf-8') as f:
         f.write(updated_content)
-    print(f'成功更新 {html_file}，共找到{len(image_list)}张图片')
+    print(f'Successfully updated {html_file}, found {len(image_list)} images.')
 
 if __name__ == '__main__':
     for config in configs:
         update_html(config)
-    print(f'所有页面图片列表更新完成')
+    print(f'All page image lists updated.')
