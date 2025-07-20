@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>图片展示</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+        padding-top: 80px; /* 避免内容被导航栏遮挡 */
+    }
+    .navbar {
+        background-color: #333;
+        padding: 0.5rem;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    .nav-link {
+        color: white;
+        text-decoration: none;
+        margin: 0 0.8rem;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+        display: inline-block;
+    }
+
+    @media (max-width: 600px) {
+        .nav-link {
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+        .navbar {
+            padding: 0.3rem;
+        }
+    }
+    .nav-link:hover {
+        color: #4CAF50;
+    }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .image-container {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        .image-container:hover img {
+            transform: scale(1.03);
+        }
+        .image-name {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #666;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="products-new.html" class="nav-link">新品推荐</a>
+        <a href="products-hot.html" class="nav-link">爆款专区</a>
+        <a href="products-classic.html" class="nav-link">经典款</a>
+    </nav>
+    <h1>流云帆布鞋 - 首页</h1>
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        // 此数组由脚本自动生成，每次添加/删除图片后请运行update_images.py脚本更新
+const images = [
+    '10.jpg',
+    '11.jpg',
+    '12.jpg',
+    '13.jpg',
+    '14.jpg',
+    '15.jpg',
+    '16.jpg',
+    '17.jpg',
+    '18.jpg',
+    '19.jpg',
+    '2.jpg',
+    '20.jpg',
+    '21.jpg',
+    '22.jpg',
+    '3.jpg',
+    '4.jpg',
+    '5.jpg',
+    '6.jpg',
+    '7.jpg',
+    '8.jpg',
+    '9.jpg'
+];
+
+        const gallery = document.getElementById('gallery');
+        
+        images.forEach(imageName => {
+            const imageUrl = `./picture/${imageName}`;
+            
+        const container = document.createElement('div');
+        container.className = 'image-container';
+        
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = imageName;
+        img.loading = 'lazy';
+        img.style.cursor = 'pointer';
+        
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'image-name';
+        nameDiv.textContent = imageName;
+        
+        container.appendChild(img);
+        container.appendChild(nameDiv);
+        gallery.appendChild(container);
+
+        // 添加点击放大功能
+        img.addEventListener('click', () => {
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            modal.style.zIndex = '1000';
+            
+            const modalImg = document.createElement('img');
+            modalImg.src = imageUrl;
+            modalImg.style.maxWidth = '90%';
+            modalImg.style.maxHeight = '90%';
+            modalImg.style.objectFit = 'contain';
+            
+            modal.appendChild(modalImg);
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+        });
+        });
+    </script>
+</body>
+</html>
