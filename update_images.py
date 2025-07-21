@@ -62,7 +62,6 @@ def update_html(config):
     if start_idx == -1 or end_idx == -1:
         print(f'Warning: Image array code block not found in {html_file}, please check if the comment line is correct.')
         return
-
     # 写入更新后的内容
     updated_content = content[:start_idx] + new_code + content[end_idx:]
     with open(html_file, 'w', encoding='utf-8') as f:
