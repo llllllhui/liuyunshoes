@@ -4,131 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>爆款专区 - 流云帆布鞋</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1em 0;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-        }
-        nav ul {
-            list-style: none;
-            padding: 0;
-            text-align: center;
-            background-color: #555;
-        }
-        nav ul li {
-            display: inline;
-            margin: 0 15px;
-        }
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 0;
-            display: inline-block;
-        }
-        nav ul li a:hover {
-            background-color: #777;
-        }
-        .container {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .hero {
-            text-align: center;
-            padding: 50px 20px;
-            background-color: #e9e9e9;
-            margin-bottom: 20px;
-        }
-        .hero h2 {
-            color: #333;
-        }
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .product-item {
-            border: 1px solid #ddd;
-            padding: 15px;
-            text-align: center;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .product-item img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
-        .product-item h3 {
-            font-size: 1.2em;
-            margin: 10px 0;
-        }
-        .product-item p {
-            color: #666;
-            font-size: 0.9em;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #333;
-            color: #fff;
-            margin-top: 20px;
-        }
-        /* products-hot.html specific styles */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .image-container {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 380px;
-        }
-        .image-container:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
-        }
-        .image-container img {
-            width: 100%;
-            height: 280px;
-            object-fit: cover;
-            display: block;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
-        .image-container:hover img {
-            transform: scale(1.05);
-        }
-        .image-name {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
@@ -160,72 +36,33 @@
 
     <script>
         // 可根据需要修改此数组为爆款图片列表
-const images = [
-    '微信图片_20250726102125.jpg',
-    '微信图片_20250726102503.jpg',
-    '微信图片_202507261025031.jpg',
-    '微信图片_20250726102504.jpg',
-    '微信图片_202507261025041.jpg',
-    '微信图片_202507261025042.jpg',
-    '微信图片_202507261025043.jpg',
-    '微信图片_202507261025044.jpg',
-    '微信图片_202507261025045.jpg',
-    '微信图片_202507261025046.jpg',
-    '微信图片_202507261025047.jpg',
-    '微信图片_202507261025048.jpg',
-    '微信图片_20250726102505.jpg',
-    '微信图片_202507261025051.jpg',
-    '微信图片_202507261025052.jpg',
-    '微信图片_202507261025053.jpg',
-    '微信图片_202507261025054.jpg',
-    '微信图片_20250726102506.jpg',
-    '微信图片_20250726102507.jpg',
-    '微信图片_20250726102508.jpg',
-    '微信图片_20250726102509.jpg',
-    '微信图片_20250726102510.jpg',
-    '微信图片_20250726102511.jpg',
-    '微信图片_20250726102512.jpg'
-];
-        const gallery = document.getElementById('gallery');
-        images.forEach(imageName => {
-            const imageUrl = `./hot_product/${imageName}`;
-            const container = document.createElement('div');
-            container.className = 'image-container';
-            const img = document.createElement('img');
-            img.src = imageUrl;
-            img.alt = imageName;
-            img.loading = 'lazy';
-            img.style.cursor = 'pointer';
-            const nameDiv = document.createElement('div');
-            nameDiv.className = 'image-name';
-            nameDiv.textContent = imageName;
-            container.appendChild(img);
-            // container.appendChild(nameDiv); // 移除图片名称显示
-            gallery.appendChild(container);
-            img.addEventListener('click', () => {
-                const modal = document.createElement('div');
-                modal.style.position = 'fixed';
-                modal.style.top = 0;
-                modal.style.left = 0;
-                modal.style.width = '100%';
-                modal.style.height = '100%';
-                modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
-                modal.style.display = 'flex';
-                modal.style.justifyContent = 'center';
-                modal.style.alignItems = 'center';
-                modal.style.zIndex = 1000;
-                const modalImg = document.createElement('img');
-                modalImg.src = imageUrl;
-                modalImg.style.maxWidth = '90%';
-                modalImg.style.maxHeight = '90%';
-                modalImg.style.objectFit = 'contain';
-                modal.appendChild(modalImg);
-                document.body.appendChild(modal);
-                modal.addEventListener('click', () => {
-                    document.body.removeChild(modal);
-                });
-            });
-        });
+    const images = [
+        'hot_product/hot-product-1.jpg',
+        'hot_product/hot-product-2.jpg',
+        'hot_product/hot-product-3.jpg',
+        'hot_product/hot-product-4.jpg',
+        'hot_product/hot-product-5.jpg',
+        'hot_product/hot-product-6.jpg',
+        'hot_product/hot-product-7.jpg',
+        'hot_product/hot-product-8.jpg',
+        'hot_product/hot-product-9.jpg',
+        'hot_product/hot-product-10.jpg',
+        'hot_product/hot-product-11.jpg',
+        'hot_product/hot-product-12.jpg',
+        'hot_product/hot-product-13.jpg',
+        'hot_product/hot-product-14.jpg',
+        'hot_product/hot-product-15.jpg',
+        'hot_product/hot-product-16.jpg',
+        'hot_product/hot-product-17.jpg',
+        'hot_product/hot-product-18.jpg',
+        'hot_product/hot-product-19.jpg',
+        'hot_product/hot-product-20.jpg',
+        'hot_product/hot-product-21.jpg',
+        'hot_product/hot-product-22.jpg',
+        'hot_product/hot-product-23.jpg',
+        'hot_product/hot-product-24.jpg'
+    ];
     </script>
+    <script src="gallery.js" defer></script>
 </body>
 </html>
