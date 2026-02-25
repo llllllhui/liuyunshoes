@@ -23,17 +23,63 @@ export async function POST(request: Request) {
     const supabase = await createClient()
     const filename = `${Date.now()}-${file.name}`
 
-    const [{ data: imageData }, { data: thumbnailData }] = await Promise.all([
+    // 获取图片的公开 URL
+    const { data: urlData } = supabase.storage
+      .from('products')
+      .getPublicUrl('original/' + filename)
+
+    const { data: thumbnailUrlData } = supabase.storage
+      .from('products')
+      .getPublicUrl('thumbnails/' + filename)
+
+    // 上传图片文件
+    const [{ error: uploadError }] = await Promise.all([
       supabase.storage.from('products').upload(`original/${filename}`, compressed),
       supabase.storage.from('products').upload(`thumbnails/${filename}`, thumbnail),
     ])
 
+    if (uploadError) {
+      console.error('Storage upload error:', uploadError)
+      return NextResponse.json({ error: '图片上传失败: ' + uploadError.message }, { status: 500 })
+    }
+
+    // 创建产品记录
+    const productName = file.name.replace(/\.[^/.]+$/, '') // 去掉扩展名
+    const { data: product, error: dbError } = await supabase
+      .from('products')
+      .insert({
+        name: productName,
+        category: category,
+      })
+      .select()
+      .single()
+
+    if (dbError) {
+      console.error('Database insert error:', dbError)
+      return NextResponse.json({ error: '数据库插入失败: ' + dbError.message }, { status: 500 })
+    }
+
+    // 创建图片记录
+    const { error: imageError } = await supabase
+      .from('product_images')
+      .insert({
+        product_id: product.id,
+        image_url: urlData.publicUrl,
+        thumbnail_url: thumbnailUrlData.publicUrl,
+      })
+
+    if (imageError) {
+      console.error('Image record error:', imageError)
+      return NextResponse.json({ error: '图片记录创建失败: ' + imageError.message }, { status: 500 })
+    }
+
     return NextResponse.json({
-      imageUrl: imageData?.path,
-      thumbnailUrl: thumbnailData?.path,
+      success: true,
+      productId: product.id,
+      productName: product.name,
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Upload error:', error)
-    return NextResponse.json({ error: '上传失败' }, { status: 500 })
+    return NextResponse.json({ error: '上传失败: ' + error.message }, { status: 500 })
   }
 }
