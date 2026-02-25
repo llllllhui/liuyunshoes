@@ -84,4 +84,4 @@ liuyunshoes/
 **店主:** 朱文格
 **电话:** 15224226812
 **地址:** 聊城东昌府区香江一期广场东路西排28
-**网址:** https://www.liuyunshoes.store/
+**网址:** https://liuyun.186633.xyz/

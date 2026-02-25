@@ -73,7 +73,7 @@ WITH CHECK ( bucket_id = 'products' );
 -- 插入管理员（密码: Admin123!@#，请登录后立即修改）
 INSERT INTO admins (email, password_hash, name)
 VALUES (
-  'admin@liuyunshoes.store',
+  'admin@liuyun.186633.xyz',
   crypt('Admin123!@#', gen_salt('bf')),
   '管理员'
 );
@@ -112,7 +112,7 @@ npm run dev
 2. 访问测试：
    - 前台: http://localhost:3000
    - 管理后台: http://localhost:3000/admin
-   - 登录邮箱: `admin@liuyunshoes.store`
+   - 登录邮箱: `admin@liuyun.186633.xyz`
    - 登录密码: `Admin123!@#`
 
 ## 故障排除

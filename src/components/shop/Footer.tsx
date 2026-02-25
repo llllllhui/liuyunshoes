@@ -13,7 +13,7 @@ export function Footer() {
             </p>
             <p className="mb-2">地址：聊城东昌府区香江一期广场东路西排28</p>
             <p>
-              网址：<a href="https://www.liuyunshoes.store/" className="hover:text-slate-300">liuyunshoes.store</a>
+              网址：<a href="https://liuyun.186633.xyz/" className="hover:text-slate-300">liuyun.186633.xyz</a>
             </p>
           </div>
           <div>

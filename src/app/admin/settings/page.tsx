@@ -54,7 +54,7 @@ export default function SettingsPage() {
                 <Input
                   id="email"
                   type="email"
-                  defaultValue="admin@liuyunshoes.store"
+                  defaultValue="zhuwenge@liuyun.186633.xyz"
                   disabled
                 />
                 <p className="text-sm text-slate-500 mt-1">

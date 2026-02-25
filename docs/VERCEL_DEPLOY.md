@@ -50,7 +50,7 @@
 
 1. 在项目设置中，点击 **Domains**
 2. 点击 **Add Domain**
-3. 输入您的域名：`liuyunshoes.store`
+3. 输入您的域名：`liuyun.186633.xyz`
 4. Vercel 会提供 DNS 记录配置
 
 ### DNS 配置
@@ -75,7 +75,7 @@ Value: cname.vercel-dns.com
 
 ## 步骤 7: 验证部署
 
-1. 访问 https://www.liuyunshoes.store/
+1. 访问 https://www.liuyun.186633.xyz/
 2. 检查以下功能：
    - ✅ 首页正常显示
    - ✅ 导航菜单可点击
@@ -152,7 +152,7 @@ Vercel 免费计划包括：
 
 ## 完成！
 
-您的网站现在应该已经在 https://www.liuyunshoes.store/ 上运行了！
+您的网站现在应该已经在 https://www.liuyun.186633.xyz/ 上运行了！
 
 如有问题，请检查：
 - Vercel 部署日志
