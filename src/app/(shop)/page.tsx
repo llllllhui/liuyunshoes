@@ -19,6 +19,7 @@ async function getHotProducts() {
   return data?.map((p: any) => ({
     id: p.id,
     name: p.name,
+    description: p.description,
     imageUrl: p.product_images?.[0]?.image_url || '',
     thumbnailUrl: p.product_images?.[0]?.thumbnail_url,
   })) || []

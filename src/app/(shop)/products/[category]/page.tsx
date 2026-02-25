@@ -14,8 +14,6 @@ const categoryNames: Record<string, string> = {
 async function getProducts(category: string) {
   const supabase = await createClient()
 
-  console.log(`🔍 查询分类: ${category}`)
-
   const { data, error } = await supabase
     .from('products')
     .select(`
@@ -27,25 +25,17 @@ async function getProducts(category: string) {
     .order('display_order', { ascending: true })
 
   if (error) {
-    console.error('❌ 查询失败:', error)
+    console.error('查询失败:', error)
     return []
   }
 
-  console.log(`✅ 找到 ${data?.length || 0} 个产品`)
-
-  const products = data?.map((p: any) => {
-    const imageUrl = p.product_images?.[0]?.image_url || ''
-    const thumbnailUrl = p.product_images?.[0]?.thumbnail_url || ''
-    console.log(`  - ${p.name}: ${thumbnailUrl || '无缩略图'}`)
-    return {
-      id: p.id,
-      name: p.name,
-      imageUrl,
-      thumbnailUrl,
-    }
-  }) || []
-
-  return products
+  return data?.map((p: any) => ({
+    id: p.id,
+    name: p.name,
+    description: p.description,
+    imageUrl: p.product_images?.[0]?.image_url || '',
+    thumbnailUrl: p.product_images?.[0]?.thumbnail_url,
+  })) || []
 }
 
 export default async function CategoryPage({ params }: Props) {

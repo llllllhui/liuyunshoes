@@ -9,9 +9,10 @@ interface ProductCardProps {
   name: string
   imageUrl: string
   thumbnailUrl?: string
+  description?: string
 }
 
-export function ProductCard({ id, name, imageUrl, thumbnailUrl }: ProductCardProps) {
+export function ProductCard({ id, name, imageUrl, thumbnailUrl, description }: ProductCardProps) {
   const [showModal, setShowModal] = useState(false)
   const [imageError, setImageError] = useState(false)
   const displayUrl = thumbnailUrl || imageUrl
@@ -41,8 +42,12 @@ export function ProductCard({ id, name, imageUrl, thumbnailUrl }: ProductCardPro
             />
           )}
         </div>
-        <div className="p-4 text-center">
-          <p className="text-sm text-slate-600">点击查看详情咨询</p>
+        <div className="p-4">
+          <h3 className="font-semibold text-slate-900 mb-1 truncate">{name}</h3>
+          {description && (
+            <p className="text-sm text-slate-600 line-clamp-2">{description}</p>
+          )}
+          <p className="text-xs text-slate-500 mt-2">点击查看详情咨询</p>
         </div>
       </div>
 
@@ -58,7 +63,7 @@ export function ProductCard({ id, name, imageUrl, thumbnailUrl }: ProductCardPro
           >
             <X className="h-8 w-8" />
           </button>
-          <div className="relative max-w-4xl max-h-[90vh] w-full" onClick={(e) => e.stopPropagation()}>
+          <div className="relative max-w-4xl max-h-[90vh] w-full overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <Image
               src={imageUrl}
               alt={name}
@@ -66,8 +71,13 @@ export function ProductCard({ id, name, imageUrl, thumbnailUrl }: ProductCardPro
               height={900}
               className="w-full h-auto object-contain"
             />
-            <div className="bg-white p-4 mt-4 rounded-lg">
-              <h3 className="text-lg font-semibold mb-2">{name}</h3>
+            <div className="bg-white p-6 mt-4 rounded-lg">
+              <h3 className="text-xl font-bold mb-2">{name}</h3>
+              {description && (
+                <div className="mb-4">
+                  <p className="text-slate-700 whitespace-pre-wrap">{description}</p>
+                </div>
+              )}
               <p className="text-slate-600 mb-4">
                 如您对此产品感兴趣，欢迎来电咨询
               </p>

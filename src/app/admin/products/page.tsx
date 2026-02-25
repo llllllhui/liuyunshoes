@@ -2,6 +2,7 @@ import { Sidebar } from '@/components/admin/Sidebar'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/server'
+import { Pencil, Plus } from 'lucide-react'
 
 export default async function ProductsPage() {
   const supabase = await createClient()
@@ -21,7 +22,10 @@ export default async function ProductsPage() {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-slate-900">产品管理</h1>
           <Link href="/admin/upload">
-            <Button>上传新产品</Button>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              上传新产品
+            </Button>
           </Link>
         </div>
 
@@ -31,19 +35,24 @@ export default async function ProductsPage() {
               <tr>
                 <th className="px-6 py-3 text-left text-sm font-medium text-slate-700">名称</th>
                 <th className="px-6 py-3 text-left text-sm font-medium text-slate-700">分类</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-slate-700">描述</th>
                 <th className="px-6 py-3 text-left text-sm font-medium text-slate-700">价格</th>
                 <th className="px-6 py-3 text-left text-sm font-medium text-slate-700">状态</th>
+                <th className="px-6 py-3 text-right text-sm font-medium text-slate-700">操作</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
               {hasRealData ? (
                 products.map((product: any) => (
                   <tr key={product.id}>
-                    <td className="px-6 py-4">{product.name}</td>
+                    <td className="px-6 py-4 font-medium">{product.name}</td>
                     <td className="px-6 py-4">
                       {product.category === 'new' && '新品'}
                       {product.category === 'hot' && '热销'}
                       {product.category === 'classic' && '经典'}
+                    </td>
+                    <td className="px-6 py-4 text-slate-600 max-w-xs truncate">
+                      {product.description || '-'}
                     </td>
                     <td className="px-6 py-4">¥{product.price || '-'}</td>
                     <td className="px-6 py-4">
@@ -53,11 +62,18 @@ export default async function ProductsPage() {
                         <span className="text-slate-400">下架</span>
                       )}
                     </td>
+                    <td className="px-6 py-4 text-right">
+                      <Link href={`/admin/products/${product.id}/edit`}>
+                        <Button variant="ghost" size="sm">
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
                     <div className="flex flex-col items-center gap-4">
                       <div className="text-4xl">📦</div>
                       <div>
