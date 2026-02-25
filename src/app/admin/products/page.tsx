@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/server'
 import { Pencil, Plus } from 'lucide-react'
+import { DeleteButton } from '@/components/admin/DeleteButton'
 
 export default async function ProductsPage() {
   const supabase = await createClient()
@@ -62,12 +63,13 @@ export default async function ProductsPage() {
                         <span className="text-slate-400">下架</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-6 py-4 text-right flex gap-2 justify-end">
                       <Link href={`/admin/products/${product.id}/edit`}>
                         <Button variant="ghost" size="sm">
                           <Pencil className="h-4 w-4" />
                         </Button>
                       </Link>
+                      <DeleteButton productId={product.id} productName={product.name} />
                     </td>
                   </tr>
                 ))

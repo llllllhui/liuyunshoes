@@ -7,16 +7,16 @@ import { createClient } from '@/lib/supabase/server'
 export default async function AdminPage() {
   const supabase = await createClient()
 
-  // 获取真实统计数据
+  // 获取真实统计数据（只统计已上架的产品）
   const [
     { count: totalProducts },
     { count: newProducts },
     { count: hotProducts },
     { count: pendingInquiries }
   ] = await Promise.all([
-    supabase.from('products').select('*', { count: 'exact', head: true }),
-    supabase.from('products').select('*', { count: 'exact', head: true }).eq('category', 'new'),
-    supabase.from('products').select('*', { count: 'exact', head: true }).eq('category', 'hot'),
+    supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true),
+    supabase.from('products').select('*', { count: 'exact', head: true }).eq('category', 'new').eq('is_active', true),
+    supabase.from('products').select('*', { count: 'exact', head: true }).eq('category', 'hot').eq('is_active', true),
     supabase.from('inquiries').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
   ])
 

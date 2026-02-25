@@ -24,6 +24,7 @@ export default function EditProductPage() {
   const [price, setPrice] = useState('')
   const [isActive, setIsActive] = useState(true)
   const [error, setError] = useState('')
+  const [images, setImages] = useState<Array<{ image_url: string; thumbnail_url: string | null }>>([])
 
   useEffect(() => {
     loadProduct()
@@ -45,6 +46,17 @@ export default function EditProductPage() {
         setDescription(data.description || '')
         setPrice(data.price?.toString() || '')
         setIsActive(data.is_active ?? true)
+      }
+
+      // 加载产品图片
+      const { data: imageData, error: imageError } = await supabase
+        .from('product_images')
+        .select('image_url, thumbnail_url')
+        .eq('product_id', productId)
+        .order('display_order', { ascending: true })
+
+      if (!imageError && imageData) {
+        setImages(imageData)
       }
     } catch (err: any) {
       setError(err.message)
@@ -104,6 +116,24 @@ export default function EditProductPage() {
               返回
             </Button>
           </div>
+
+          {/* 产品图片预览 */}
+          {images.length > 0 && (
+            <div className="mb-6 bg-white rounded-lg shadow p-6">
+              <h3 className="text-sm font-medium text-slate-700 mb-3">产品图片</h3>
+              <div className="flex flex-wrap gap-3">
+                {images.map((img, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={img.thumbnail_url || img.image_url}
+                      alt={`${name} - 图片 ${index + 1}`}
+                      className="w-20 h-20 object-cover rounded-lg border border-slate-200"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6 bg-white rounded-lg shadow p-6">
             <div>
