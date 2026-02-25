@@ -71,8 +71,8 @@ export default function UploadPage() {
   return (
     <div className="flex">
       <Sidebar />
-      <main className="flex-1 p-8 ml-64">
-        <h1 className="text-2xl font-bold text-slate-900 mb-6">批量上传</h1>
+      <main className="flex-1 p-4 lg:p-8 lg:ml-64 mt-28 lg:mt-0">
+        <h1 className="text-xl lg:text-2xl font-bold text-slate-900 mb-6">批量上传</h1>
 
         <div className="max-w-2xl space-y-6">
           <div>
@@ -88,17 +88,20 @@ export default function UploadPage() {
             </select>
           </div>
 
-          <div className="border-2 border-dashed border-slate-300 rounded-lg p-12 text-center">
+          <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 md:p-12 text-center">
             <Upload className="h-12 w-12 mx-auto text-slate-400 mb-4" />
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={(e) => setFiles(e.target.files)}
-              className="block mx-auto"
-              disabled={uploading}
-            />
-            <p className="text-slate-600 mt-2">
+            <label className="inline-block cursor-pointer bg-white border border-slate-300 rounded-lg px-6 py-3 hover:bg-slate-50 transition-colors">
+              <span className="text-slate-700 font-medium">选择文件</span>
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={(e) => setFiles(e.target.files)}
+                disabled={uploading}
+                className="hidden"
+              />
+            </label>
+            <p className="text-slate-600 mt-3 text-sm">
               {selectedCount > 0 ? `已选择 ${selectedCount} 个文件` : '选择多张图片上传'}
             </p>
           </div>

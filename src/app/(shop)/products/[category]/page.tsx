@@ -44,9 +44,9 @@ export default async function CategoryPage({ params }: Props) {
   const categoryName = categoryNames[category] || '产品列表'
 
   return (
-    <div className="py-8">
+    <div className="py-6 md:py-8">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-slate-900 mb-8">{categoryName}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6 md:mb-8">{categoryName}</h1>
         {products.length === 0 ? (
           <div className="text-center py-12 text-slate-600">
             <div className="text-4xl mb-4">📦</div>
@@ -58,7 +58,7 @@ export default async function CategoryPage({ params }: Props) {
             <div className="mb-4 text-sm text-slate-500">
               显示 {products.length} 个产品
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {products.map((product) => (
                 <ProductCard key={product.id} {...product} />
               ))}

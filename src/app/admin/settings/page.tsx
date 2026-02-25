@@ -7,8 +7,8 @@ export default function SettingsPage() {
   return (
     <div className="flex">
       <Sidebar />
-      <main className="flex-1 p-8 ml-64">
-        <h1 className="text-2xl font-bold text-slate-900 mb-6">设置</h1>
+      <main className="flex-1 p-4 lg:p-8 lg:ml-64 mt-28 lg:mt-0">
+        <h1 className="text-xl lg:text-2xl font-bold text-slate-900 mb-6">设置</h1>
 
         <div className="max-w-2xl space-y-6">
           <div className="bg-white rounded-lg shadow p-6">

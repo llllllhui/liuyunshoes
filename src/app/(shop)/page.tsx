@@ -31,22 +31,22 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-slate-100 to-slate-200 py-20">
+      <section className="bg-gradient-to-r from-slate-100 to-slate-200 py-12 md:py-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 md:mb-6">
             专业鞋类批发，品质保证
           </h1>
-          <p className="text-xl text-slate-700 mb-8 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg lg:text-xl text-slate-700 mb-6 md:mb-8 max-w-2xl mx-auto px-4">
             流云帆布鞋 - 聊城香江市场，为您提供时尚运动鞋、休闲鞋批发服务
           </p>
-          <div className="flex justify-center gap-4 flex-wrap">
-            <Link href="/products/hot">
-              <button className="bg-slate-900 text-white px-8 py-3 rounded-lg hover:bg-slate-700 transition-colors">
+          <div className="flex justify-center gap-3 md:gap-4 flex-wrap px-4">
+            <Link href="/products/hot" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto bg-slate-900 text-white px-6 md:px-8 py-3 rounded-lg hover:bg-slate-700 transition-colors text-base md:min-w-[160px]">
                 浏览热销产品
               </button>
             </Link>
-            <a href="tel:15224226812">
-              <button className="border-2 border-slate-900 text-slate-900 px-8 py-3 rounded-lg hover:bg-slate-900 hover:text-white transition-colors">
+            <a href="tel:15224226812" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto border-2 border-slate-900 text-slate-900 px-6 md:px-8 py-3 rounded-lg hover:bg-slate-900 hover:text-white transition-colors text-base md:min-w-[160px]">
                 立即咨询
               </button>
             </a>
@@ -79,10 +79,10 @@ export default async function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="bg-slate-50 py-16">
+      <section className="bg-slate-50 py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-slate-900 mb-12">为什么选择我们</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-slate-900 mb-8 md:mb-12">为什么选择我们</h2>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             <div className="text-center">
               <div className="text-4xl mb-4">📦</div>
               <h3 className="text-xl font-semibold mb-2">货源丰富</h3>
@@ -103,16 +103,16 @@ export default async function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="container mx-auto px-4 text-center">
-          <div className="bg-slate-900 text-white rounded-xl p-12 max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold mb-4">准备好开始采购了吗？</h2>
-            <p className="text-slate-300 mb-6">
+          <div className="bg-slate-900 text-white rounded-xl p-8 md:p-12 max-w-3xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">准备好开始采购了吗？</h2>
+            <p className="text-slate-300 mb-6 text-base md:text-lg">
               联系我们获取最新产品目录和批发价格
             </p>
             <a
               href="tel:15224226812"
-              className="inline-block bg-white text-slate-900 px-8 py-3 rounded-lg hover:bg-slate-100 transition-colors font-semibold"
+              className="inline-block bg-white text-slate-900 px-6 md:px-8 py-3 rounded-lg hover:bg-slate-100 transition-colors font-semibold text-sm md:text-base min-w-[200px]"
             >
               📞 拨打电话: 15224226812
             </a>

@@ -98,7 +98,7 @@ export default function EditProductPage() {
     return (
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 p-8 ml-64">
+        <main className="flex-1 p-4 lg:p-8 lg:ml-64 mt-28 lg:mt-0">
           <p>加载中...</p>
         </main>
       </div>
@@ -108,10 +108,10 @@ export default function EditProductPage() {
   return (
     <div className="flex">
       <Sidebar />
-      <main className="flex-1 p-8 ml-64">
+      <main className="flex-1 p-4 lg:p-8 lg:ml-64 mt-16 lg:mt-0">
         <div className="max-w-2xl">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-slate-900">编辑产品</h1>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+            <h1 className="text-xl lg:text-2xl font-bold text-slate-900">编辑产品</h1>
             <Button variant="outline" onClick={() => router.back()}>
               返回
             </Button>
