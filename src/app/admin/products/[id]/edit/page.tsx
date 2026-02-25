@@ -86,7 +86,7 @@ export default function EditProductPage() {
     return (
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-8 ml-64">
           <p>加载中...</p>
         </main>
       </div>
@@ -96,7 +96,7 @@ export default function EditProductPage() {
   return (
     <div className="flex">
       <Sidebar />
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-8 ml-64">
         <div className="max-w-2xl">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold text-slate-900">编辑产品</h1>

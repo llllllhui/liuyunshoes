@@ -18,7 +18,7 @@ export default async function ProductsPage() {
   return (
     <div className="flex">
       <Sidebar />
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-8 ml-64">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-slate-900">产品管理</h1>
           <Link href="/admin/upload">

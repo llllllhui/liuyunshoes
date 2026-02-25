@@ -30,7 +30,7 @@ export default async function AdminPage() {
   return (
     <div className="flex">
       <Sidebar />
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-8 ml-64">
         <h1 className="text-2xl font-bold text-slate-900 mb-6">仪表盘</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

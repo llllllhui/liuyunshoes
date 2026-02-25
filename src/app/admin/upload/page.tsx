@@ -71,7 +71,7 @@ export default function UploadPage() {
   return (
     <div className="flex">
       <Sidebar />
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-8 ml-64">
         <h1 className="text-2xl font-bold text-slate-900 mb-6">批量上传</h1>
 
         <div className="max-w-2xl space-y-6">
