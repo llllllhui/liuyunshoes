@@ -13,7 +13,10 @@ const categoryNames: Record<string, string> = {
 
 async function getProducts(category: string) {
   const supabase = await createClient()
-  const { data } = await supabase
+
+  console.log(`🔍 查询分类: ${category}`)
+
+  const { data, error } = await supabase
     .from('products')
     .select(`
       *,
@@ -23,12 +26,26 @@ async function getProducts(category: string) {
     .eq('is_active', true)
     .order('display_order', { ascending: true })
 
-  return data?.map((p: any) => ({
-    id: p.id,
-    name: p.name,
-    imageUrl: p.product_images?.[0]?.image_url || '',
-    thumbnailUrl: p.product_images?.[0]?.thumbnail_url,
-  })) || []
+  if (error) {
+    console.error('❌ 查询失败:', error)
+    return []
+  }
+
+  console.log(`✅ 找到 ${data?.length || 0} 个产品`)
+
+  const products = data?.map((p: any) => {
+    const imageUrl = p.product_images?.[0]?.image_url || ''
+    const thumbnailUrl = p.product_images?.[0]?.thumbnail_url || ''
+    console.log(`  - ${p.name}: ${thumbnailUrl || '无缩略图'}`)
+    return {
+      id: p.id,
+      name: p.name,
+      imageUrl,
+      thumbnailUrl,
+    }
+  }) || []
+
+  return products
 }
 
 export default async function CategoryPage({ params }: Props) {
@@ -47,11 +64,16 @@ export default async function CategoryPage({ params }: Props) {
             <p className="text-sm mt-2">请稍后再来查看最新产品</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
-          </div>
+          <>
+            <div className="mb-4 text-sm text-slate-500">
+              显示 {products.length} 个产品
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
