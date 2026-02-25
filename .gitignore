@@ -10,7 +10,7 @@ coverage
 .next/
 out/
 build
-dist/
+dist
 
 # Production
 *.log
@@ -36,3 +36,6 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE
+.idea/
