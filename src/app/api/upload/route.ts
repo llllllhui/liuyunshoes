@@ -2,6 +2,14 @@ import { createClient } from '@/lib/supabase/server'
 import { compressImage, generateThumbnail } from '@/lib/image-utils'
 import { NextResponse } from 'next/server'
 
+// 生成安全的文件名
+function generateSafeFilename(originalName: string): string {
+  const timestamp = Date.now()
+  const random = Math.random().toString(36).substring(2, 8)
+  const ext = originalName.split('.').pop()?.toLowerCase() || 'jpg'
+  return `${timestamp}-${random}.${ext}`
+}
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData()
@@ -19,20 +27,13 @@ export async function POST(request: Request) {
     const compressed = await compressImage(buffer)
     const thumbnail = await generateThumbnail(buffer)
 
+    // 生成安全的文件名
+    const filename = generateSafeFilename(file.name)
+
     // 上传到 Supabase Storage
     const supabase = await createClient()
-    const filename = `${Date.now()}-${file.name}`
 
-    // 获取图片的公开 URL
-    const { data: urlData } = supabase.storage
-      .from('products')
-      .getPublicUrl('original/' + filename)
-
-    const { data: thumbnailUrlData } = supabase.storage
-      .from('products')
-      .getPublicUrl('thumbnails/' + filename)
-
-    // 上传图片文件
+    // 先上传图片文件
     const [{ error: uploadError }] = await Promise.all([
       supabase.storage.from('products').upload(`original/${filename}`, compressed),
       supabase.storage.from('products').upload(`thumbnails/${filename}`, thumbnail),
@@ -43,8 +44,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '图片上传失败: ' + uploadError.message }, { status: 500 })
     }
 
+    // 获取图片的公开 URL
+    const { data: urlData } = supabase.storage
+      .from('products')
+      .getPublicUrl('original/' + filename)
+
+    const { data: thumbnailUrlData } = supabase.storage
+      .from('products')
+      .getPublicUrl('thumbnails/' + filename)
+
+    // 使用原始文件名（去掉扩展名）作为产品名称
+    const productName = file.name.replace(/\.[^/.]+$/, '')
+
     // 创建产品记录
-    const productName = file.name.replace(/\.[^/.]+$/, '') // 去掉扩展名
     const { data: product, error: dbError } = await supabase
       .from('products')
       .insert({
@@ -72,6 +84,8 @@ export async function POST(request: Request) {
       console.error('Image record error:', imageError)
       return NextResponse.json({ error: '图片记录创建失败: ' + imageError.message }, { status: 500 })
     }
+
+    console.log('✅ Upload successful:', { productName, productId: product.id })
 
     return NextResponse.json({
       success: true,
