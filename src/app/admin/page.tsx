@@ -2,14 +2,29 @@ import { Sidebar } from '@/components/admin/Sidebar'
 import { StatsCard } from '@/components/admin/StatsCard'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { createClient } from '@/lib/supabase/server'
 
-export default function AdminPage() {
-  // 临时统计数据 - 等待 Supabase 配置后将替换为真实数据
+export default async function AdminPage() {
+  const supabase = await createClient()
+
+  // 获取真实统计数据
+  const [
+    { count: totalProducts },
+    { count: newProducts },
+    { count: hotProducts },
+    { count: pendingInquiries }
+  ] = await Promise.all([
+    supabase.from('products').select('*', { count: 'exact', head: true }),
+    supabase.from('products').select('*', { count: 'exact', head: true }).eq('category', 'new'),
+    supabase.from('products').select('*', { count: 'exact', head: true }).eq('category', 'hot'),
+    supabase.from('inquiries').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+  ])
+
   const stats = {
-    total: 87,
-    new: 27,
-    hot: 24,
-    pending: 5,
+    total: totalProducts || 0,
+    new: newProducts || 0,
+    hot: hotProducts || 0,
+    pending: pendingInquiries || 0,
   }
 
   return (
@@ -34,15 +49,34 @@ export default function AdminPage() {
             <Link href="/admin/products">
               <Button variant="outline">管理产品</Button>
             </Link>
+            <Link href="/admin/settings">
+              <Button variant="outline">系统设置</Button>
+            </Link>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6 mt-6">
-          <h2 className="text-lg font-semibold mb-4">系统提示</h2>
-          <p className="text-slate-600">
-            Supabase 尚未配置。请在配置环境变量后重新启动服务器以启用完整功能。
-          </p>
-        </div>
+        {stats.total === 0 && (
+          <div className="bg-white rounded-lg shadow p-6 mt-6">
+            <h2 className="text-lg font-semibold mb-4">👋 欢迎使用流云帆布鞋管理系统</h2>
+            <p className="text-slate-600 mb-4">
+              您的 Supabase 已配置完成，现在可以开始添加产品了。
+            </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm font-semibold text-blue-900 mb-2">📤 上传产品</p>
+                <p className="text-sm text-blue-700">
+                  通过批量上传功能添加产品图片
+                </p>
+              </div>
+              <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                <p className="text-sm font-semibold text-purple-900 mb-2">🔄 迁移旧数据</p>
+                <p className="text-sm text-purple-700">
+                  运行 <code className="bg-purple-100 px-1 rounded">node scripts/migrate.js</code> 导入旧数据
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   )

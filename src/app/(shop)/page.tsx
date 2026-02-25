@@ -1,7 +1,32 @@
+import { createClient } from '@/lib/supabase/server'
+import { ProductCard } from '@/components/shop/ProductCard'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
-export default function HomePage() {
+async function getHotProducts() {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('products')
+    .select(`
+      *,
+      product_images(image_url, thumbnail_url)
+    `)
+    .eq('category', 'hot')
+    .eq('is_active', true)
+    .order('display_order', { ascending: true })
+    .limit(8)
+
+  return data?.map((p: any) => ({
+    id: p.id,
+    name: p.name,
+    imageUrl: p.product_images?.[0]?.image_url || '',
+    thumbnailUrl: p.product_images?.[0]?.thumbnail_url,
+  })) || []
+}
+
+export default async function HomePage() {
+  const hotProducts = await getHotProducts()
+
   return (
     <div>
       {/* Hero Section */}
@@ -37,21 +62,18 @@ export default function HomePage() {
               查看更多 <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="group cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className="relative aspect-square overflow-hidden bg-slate-100 flex items-center justify-center">
-                  <span className="text-slate-400">产品图片 {i}</span>
-                </div>
-                <div className="p-4 text-center">
-                  <p className="text-sm text-slate-600">点击查看详情咨询</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          {hotProducts.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-lg shadow">
+              <div className="text-4xl mb-4">📦</div>
+              <p className="text-slate-600">热销产品即将上线，敬请期待</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {hotProducts.map((product) => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

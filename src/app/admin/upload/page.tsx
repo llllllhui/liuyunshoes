@@ -5,27 +5,68 @@ import { Sidebar } from '@/components/admin/Sidebar'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Upload } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function UploadPage() {
   const [category, setCategory] = useState('new')
   const [files, setFiles] = useState<FileList | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [uploadStatus, setUploadStatus] = useState<{
+    success: number
+    failed: number
+    errors: string[]
+  }>({ success: 0, failed: 0, errors: [] })
+  const router = useRouter()
 
   const handleUpload = async () => {
     if (!files || files.length === 0) return
 
     setUploading(true)
+    setUploadStatus({ success: 0, failed: 0, errors: [] })
+
     try {
-      // TODO: 实现上传到 Supabase 的逻辑
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      alert('上传功能需要配置 Supabase 后才能使用')
-      setFiles(null)
+      const results = { success: 0, failed: 0, errors: [] as string[] }
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('category', category)
+
+        try {
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          })
+
+          if (response.ok) {
+            results.success++
+          } else {
+            results.failed++
+            results.errors.push(`${file.name}: ${await response.text()}`)
+          }
+        } catch (error: any) {
+          results.failed++
+          results.errors.push(`${file.name}: ${error.message}`)
+        }
+      }
+
+      setUploadStatus(results)
+
+      if (results.success > 0) {
+        setTimeout(() => {
+          router.push('/admin/products')
+          router.refresh()
+        }, 2000)
+      }
     } catch (error) {
       alert('上传失败')
     } finally {
       setUploading(false)
     }
   }
+
+  const selectedCount = files?.length || 0
 
   return (
     <div className="flex">
@@ -55,19 +96,46 @@ export default function UploadPage() {
               accept="image/*"
               onChange={(e) => setFiles(e.target.files)}
               className="block mx-auto"
+              disabled={uploading}
             />
-            <p className="text-slate-600 mt-2">选择多张图片上传</p>
+            <p className="text-slate-600 mt-2">
+              {selectedCount > 0 ? `已选择 ${selectedCount} 个文件` : '选择多张图片上传'}
+            </p>
           </div>
 
-          <Button onClick={handleUpload} disabled={uploading || !files}>
+          <Button onClick={handleUpload} disabled={uploading || selectedCount === 0}>
             {uploading ? '上传中...' : '开始上传'}
           </Button>
 
-          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-sm text-yellow-800">
-              ⚠️ 上传功能需要配置 Supabase 后才能使用。请先完成 Supabase 项目设置。
-            </p>
-          </div>
+          {uploadStatus.success > 0 || uploadStatus.failed > 0 ? (
+            <div className="space-y-2">
+              {uploadStatus.success > 0 && (
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-sm text-green-800">
+                    ✅ 成功上传 {uploadStatus.success} 个文件
+                  </p>
+                </div>
+              )}
+              {uploadStatus.failed > 0 && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-800 font-semibold mb-2">
+                    ❌ {uploadStatus.failed} 个文件上传失败
+                  </p>
+                  <ul className="text-sm text-red-700 list-disc list-inside">
+                    {uploadStatus.errors.slice(0, 5).map((error, i) => (
+                      <li key={i}>{error}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                💡 提示：图片会自动压缩并生成缩略图。支持 JPG、PNG、GIF 格式。
+              </p>
+            </div>
+          )}
         </div>
       </main>
     </div>
