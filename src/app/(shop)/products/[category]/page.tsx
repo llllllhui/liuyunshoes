@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { ProductCard } from '@/components/shop/ProductCard'
 
 interface Props {
-  params: { category: string }
+  params: Promise<{ category: string }>
 }
 
 const categoryNames: Record<string, string> = {
@@ -49,7 +49,7 @@ async function getProducts(category: string) {
 }
 
 export default async function CategoryPage({ params }: Props) {
-  const category = params.category
+  const { category } = await params
   const products = await getProducts(category)
   const categoryName = categoryNames[category] || '产品列表'
 
