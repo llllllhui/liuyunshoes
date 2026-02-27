@@ -3,7 +3,7 @@ import { ProductCard } from '@/components/shop/ProductCard'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
-async function getHotProducts() {
+async function getProductsByCategory(category: string, limit: number = 8) {
   const supabase = await createClient()
   const { data } = await supabase
     .from('products')
@@ -11,10 +11,10 @@ async function getHotProducts() {
       *,
       product_images(image_url, thumbnail_url)
     `)
-    .eq('category', 'hot')
+    .eq('category', category)
     .eq('is_active', true)
     .order('display_order', { ascending: true })
-    .limit(8)
+    .limit(limit)
 
   return data?.map((p: any) => ({
     id: p.id,
@@ -25,8 +25,16 @@ async function getHotProducts() {
   })) || []
 }
 
+const categoryConfig = {
+  hot: { title: '爆款专区', description: '热销推荐', link: 'products/hot' },
+  new: { title: '新品推荐', description: '最新上市', link: 'products/new' },
+  classic: { title: '经典款式', description: '永恒经典', link: 'products/classic' },
+}
+
 export default async function HomePage() {
-  const hotProducts = await getHotProducts()
+  const hotProducts = await getProductsByCategory('hot', 8)
+  const newProducts = await getProductsByCategory('new', 8)
+  const classicProducts = await getProductsByCategory('classic', 8)
 
   return (
     <div>
@@ -55,22 +63,70 @@ export default async function HomePage() {
       </section>
 
       {/* Hot Products Section */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold text-slate-900">热销推荐</h2>
-            <Link href="/products/hot" className="text-slate-600 hover:text-slate-900 flex items-center gap-1">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">{categoryConfig.hot.title}</h2>
+            <Link href={`/${categoryConfig.hot.link}`} className="text-slate-600 hover:text-slate-900 flex items-center gap-1">
               查看更多 <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           {hotProducts.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg shadow">
               <div className="text-4xl mb-4">📦</div>
-              <p className="text-slate-600">热销产品即将上线，敬请期待</p>
+              <p className="text-slate-600">{categoryConfig.hot.description}即将上线，敬请期待</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {hotProducts.map((product) => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* New Products Section */}
+      <section className="py-12 bg-slate-50">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">{categoryConfig.new.title}</h2>
+            <Link href={`/${categoryConfig.new.link}`} className="text-slate-600 hover:text-slate-900 flex items-center gap-1">
+              查看更多 <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          {newProducts.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-lg shadow">
+              <div className="text-4xl mb-4">📦</div>
+              <p className="text-slate-600">{categoryConfig.new.description}即将上线，敬请期待</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+              {newProducts.map((product) => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Classic Products Section */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">{categoryConfig.classic.title}</h2>
+            <Link href={`/${categoryConfig.classic.link}`} className="text-slate-600 hover:text-slate-900 flex items-center gap-1">
+              查看更多 <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          {classicProducts.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-lg shadow">
+              <div className="text-4xl mb-4">📦</div>
+              <p className="text-slate-600">{categoryConfig.classic.description}即将上线，敬请期待</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+              {classicProducts.map((product) => (
                 <ProductCard key={product.id} {...product} />
               ))}
             </div>
